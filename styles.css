@@ -1,0 +1,220 @@
+  :root {
+    --bg: #000000;
+    --surface: #1a1a21;
+    --surface-2: #232330;
+    --border: #33334a;
+    --text: #ececf1;
+    --muted: #9a9ab0;
+    --accent: #339B1E;
+    --red: #ff5470;
+    --orange: #ff9f43;
+    --yellow: #f9c74f;
+    --green: #06d6a0;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 24px 16px 48px;
+  }
+  .container { width: 90%; }
+  header { text-align: center; margin-bottom: 28px; }
+  header h1 { font-size: 1.7rem; letter-spacing: -0.02em; }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--muted); margin-top: 8px; font-size: 0.95rem; }
+
+  .promise {
+    background: #000000;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  .net-status {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 16px;
+    }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+  .tabs button {
+    flex: 1;
+    padding: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .tabs button.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .tab-panel { display: none; }
+  .tab-panel.visible { display: block; }
+
+  label.field-label { display: block; font-size: 0.9rem; color: var(--muted); margin-bottom: 8px; font-weight: 600; }
+
+  .input-wrap { position: relative; }
+  #pw-input {
+    width: 100%;
+    padding: 14px 84px 14px 14px;
+    font-size: 1.05rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    outline: none;
+  }
+  #pw-input:focus { border-color: var(--accent); }
+  .toggle-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--surface-2);
+    border: none;
+    color: var(--muted);
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+  .toggle-btn:hover { color: var(--text); }
+
+  /* medidor de força */
+  .meter { display: flex; gap: 6px; margin: 18px 0 8px; }
+  .meter span {
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--surface-2);
+    transition: background 0.2s ease;
+  }
+  .meter .on-1 { background: var(--red); }
+  .meter .on-2 { background: var(--red); }
+  .meter .on-3 { background: var(--orange); }
+  .meter .on-4 { background: var(--green); }
+  .meter .on-5 { background: var(--green); }
+
+  .verdict { font-size: 1.1rem; font-weight: 700; min-height: 1.5em; margin-bottom: 4px; }
+  .v-0 { color: var(--red); }
+  .v-1 { color: var(--red); }
+  .v-2 { color: var(--orange); }
+  .v-3 { color: var(--yellow); }
+  .v-4 { color: var(--green); }
+
+  .times { margin-top: 18px; display: grid; gap: 8px; }
+  .time-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .time-row .label { color: var(--text); font-size: 0.85rem; }
+  .time-row .value { font-weight: 700; font-size: 0.95rem; }
+
+.verdict.waiting { color: var(--muted); font-weight: 400; }
+
+  .flag {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    display: none;
+  }
+  .flag.show { display: block; }
+  .flag.bad { background: rgba(255, 84, 112, 0.12); border: 1px solid var(--red); }
+  .flag.warning {  background: rgba(255, 209, 102, 0.12); border: 1px solid var(--yellow) }
+  .flag.ok { background: rgba(6, 214, 160, 0.1); border: 1px solid var(--green); }
+
+  /* gerador */
+  .gen-output {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 1.15rem;
+    word-break: break-all;
+    min-height: 3.2em;
+    display: flex;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .gen-actions { display: flex; gap: 10px; margin-bottom: 22px; }
+  .btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.15s ease;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-secondary { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
+  .btn:hover { filter: brightness(1.15); }
+  .btn:active { filter: brightness(0.9); }
+
+  .option-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .option-row:last-of-type { border-bottom: none; }
+  .option-row label { font-size: 0.95rem; cursor: pointer; flex: 1; }
+  .option-row input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .slider-row { padding: 14px 0 6px; }
+  .slider-row .slider-head { display: flex; justify-content: space-between; margin-bottom: 10px; }
+  .slider-head .length-value { font-weight: 700; color: var(--accent); }
+  input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+  footer {
+    margin-top: 28px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.6;
+    text-align: center;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  @media (max-width: 480px) {
+    .card { padding: 18px; }
+    header h1 { font-size: 1.4rem; }
+    .time-row { flex-direction: column; gap: 2px; }
+  }
+

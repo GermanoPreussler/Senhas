@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explicação: como funciona o hashing</title>
+<style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: black;
+    color: white;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+    line-height: 1.6;
+  }
+  h1 { font-size: 1.5em; }
+  h2 { font-size: 1.1em; margin-top: 1.5em; }
+  code {
+    background: #474546;
+    padding: 1px 4px;
+  }
+  pre {
+    background: #474546;
+    padding: 10px;
+    overflow-x: auto;
+    font-size: 0.85em;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>Como funciona o hashing</h1>
+
+<h2>1. Sua senha vira um codigo hexadecimal</h2>
+<p>Você digita sua senha, por exemplo, <strong>flamengo1895</strong>.</p>
+<p>Dentro do seu navegador, essa senha é transformada pela função de hash SHA-1 em uma sequência de 40 caracteres hexadecimais (números de 0 a 9 e letras de A a F):</p>
+<p><code>C3234CA99B5DF8649CBB03830F2323542830E097</code></p>
+<p>Essa transformação é fácil de fazer, mas impossível de reverter: a partir do resultado, ninguém consegue recuperar a senha original. A mesma senha sempre gera a mesma sequência, e trocar uma única letra muda praticamente tudo.</p>
+
+<h2>2. Apenas os 5 primeiros caracteres sao enviados</h2>
+<p>Do hash completo, separamos só o começo: <strong>C3234</strong>. Apenas esses 5 caracteres são enviados ao servidor do HIBP, que busca todas as correspondências que iniciam com os mesmos caracteres.</p>
+
+<h2>3. O servidor devolve uma lista</h2>
+<p>A resposta é uma lista de todas as senhas que começam com a mesma combinação de caracteres. Os 5 caracteres iniciais são omitidos em cada linha para evitar repetição, já que todos os itens da lista começam com eles.</p>
+<p>Exemplo com algumas das centenas de linhas que o servidor retorna:</p>
+<pre>0006E3D24CDE8E4B2FB412661A653692CD9:1
+000D57DC37FFFD6DE876D5E56A1BA1166F1:23
+005BEECE9827D890A73445E292E2C4A0521:6
+005E1A1BE354D325C9304684571C2A11B34:1
+00709A49BF1D7904BBD1CC300720770A402:2
+00B2DC4C86591253895A69A8FFD7961A2B3:2
+00D522CC61B1DFA6441E464969148FCBCD4:1
+CA99B5DF8649CBB03830F2323542830E097:10621</pre>
+
+<h2>4. A comparação final acontece no seu navegador</h2>
+<p>Depois que o navegador recebe a lista completa, é feita localmente a verificação de se o resto do seu hash, <code>CA99B5DF8649CBB03830F2323542830E097</code> está na lista ou não. Neste caso, está: sua senha já foi vazada. O número ao lado de cada linha indica em quantos vazamentos conhecidos aquela senha exata apareceu.</p>
+
+<h2>5. O que isso significa para você</h2>
+<p>Sua senha em texto nunca sai do navegador. Somente um fragmento do hash, os 5 primeiros caracteres, que, sozinhos, não permitem identificar a sua senha. Essa técnica se chama <strong>k-anonimato</strong>.</p>
+
+<h2>Faça o teste você mesmo</h2>
+<p>Cole o código abaixo no console do navegador (tecla F12). Ele calcula o hash de uma senha, troque <code>flamengo1895</code> pela senha que quiser testar:</p>
+<pre>const buf = await crypto.subtle.digest("SHA-1", new TextEncoder().encode("flamengo1895"));
+[...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("").toUpperCase();</pre>
+<p>Depois, copie os 5 primeiros caracteres do resultado e acesse:</p>
+<p><code>https://api.pwnedpasswords.com/range/C3234</code> (no lugar de <code>C3234</code>, use os seus próprios 5 caracteres)</p>
+
+</body>
+</html>
+

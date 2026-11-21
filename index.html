@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kit de Senhas: Verifique e gere senhas seguras</title>
+<meta name="description" content="Verifique a força da sua senha e gere senhas seguras. Tudo roda no seu navegador, sua senha nunca sai do seu dispositivo.">
+<link rel="stylesheet" href="styles.css">
+<script src="zxcvbn.js"></script>
+<script src="script.js" defer></script>
+
+</head>
+
+<body>
+<div class="container">
+  <header>
+    <h1>Kit de <span>Senhas</span></h1>
+    <p>Verifique e gere senhas seguras direto no seu navegador.</p>
+  </header>
+
+  <div class="promise">Sua senha <strong>nunca sai do seu navegador</strong>. Nada é enviado, salvo ou registrado, exceto 5 caracteres de um hash, usados só para checar vazamentos (e que não permitem reconstruir a senha) <a href=explicacao.html class="green"> Como funciona</a>.</div>
+
+  <div id="net-status" class="net-status"></div>
+
+  <nav class="tabs">
+    <button id="tab-btn-checker" class="active" onclick="showTab('checker')">Verificar senha</button>
+    <button id="tab-btn-generator" onclick="showTab('generator')">Gerar senha</button>
+  </nav>
+
+  <!-- ABA: VERIFICAR -->
+  <section id="panel-checker" class="tab-panel visible">
+    <div class="card">
+      <label class="field-label" for="pw-input">Digite a senha para analisar</label>
+      <div class="input-wrap">
+        <input type="password" id="pw-input" placeholder="Digite aqui…" autocomplete="off" spellcheck="false">
+        <button class="toggle-btn" id="show-btn" onclick="toggleVisibility()">mostrar</button>
+      </div>
+
+      <div class="meter" id="meter" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="verdict" id="verdict">—</div>
+
+      <div class="times">
+        <div class="time-row">
+          <span class="label">Ataque offline, hash rápido (10 bi de tentativas/s)</span>
+          <span class="value" id="time-fast">—</span>
+        </div>
+        <div class="time-row">
+          <span class="label">Ataque offline, hash lento (10 mil tentativas/s)</span>
+          <span class="value" id="time-slow">—</span>
+        </div>
+        <div class="time-row">
+          <span class="label">Ataque online sem limite (10 tentativas/s)</span>
+          <span class="value" id="time-online">—</span>
+        </div>
+      </div>
+
+      <div id="flag-hibp" class="flag bad"></div>
+      <div id="flag-hibp-ok" class="flag ok">Não encontramos esta senha em nenhum vazamento conhecido.</div>
+      <div id="flag-hibp-err" class="flag warning">Não foi possível consultar vazamentos agora. Sua senha continua protegida, nada foi enviado.</div>
+
+    </div>
+  </section>
+
+  <!-- ABA: GERAR -->
+  <section id="panel-generator" class="tab-panel">
+    <div class="card">
+      <div class="gen-output" id="gen-output">Clique em gerar ↓</div>
+      <div class="gen-actions">
+        <button class="btn btn-primary" onclick="generate()">Gerar senha</button>
+        <button class="btn btn-secondary" onclick="copyGenerated()" id="copy-btn">📋 Copiar</button>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-head">
+          <span class="field-label" style="margin:0">Tamanho</span>
+          <span class="length-value" id="length-value">16</span>
+        </div>
+        <input type="range" id="length-slider" min="8" max="64" value="16" oninput="onLengthChange()">
+      </div>
+
+      <div class="option-row">
+        <label for="opt-lower">Letras minúsculas (a–z)</label>
+        <input type="checkbox" id="opt-lower" checked onchange="regenerateIfValid()">
+      </div>
+      <div class="option-row">
+        <label for="opt-upper">Letras maiúsculas (A–Z)</label>
+        <input type="checkbox" id="opt-upper" checked onchange="regenerateIfValid()">
+      </div>
+      <div class="option-row">
+        <label for="opt-digits">Números (0–9)</label>
+        <input type="checkbox" id="opt-digits" checked onchange="regenerateIfValid()">
+      </div>
+      <div class="option-row">
+        <label for="opt-special">Caracteres especiais (!@#$%…)</label>
+        <input type="checkbox" id="opt-special" checked onchange="regenerateIfValid()">
+      </div>
+      <div class="option-row">
+        <label for="opt-ensure">Garantir pelo menos 1 de cada tipo selecionado</label>
+        <input type="checkbox" id="opt-ensure" checked onchange="regenerateIfValid()">
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>A análise de força acontece 100% no seu navegador. A checagem de vazamentos usa o sistema de k-anonimato do <a href="https://haveibeenpwned.com" target="_blank" rel="noopener">Have I Been Pwned</a> A estimativa de força usa a biblioteca <a href="https://github.com/dropbox/zxcvbn" target="_blank" rel="noopener">zxcvbn</a> (Dropbox), calibrada com padrões em inglês; senhas com palavras em português podem receber notas otimistas, por isso a checagem de vazamentos é a fonte mais confiável.</p>
+  </footer>
+</div>
+
+</body>
+</html>
+
